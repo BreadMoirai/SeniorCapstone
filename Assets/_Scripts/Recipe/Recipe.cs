@@ -35,7 +35,7 @@ public class Recipe
     /// <param name="steps">The steps for this recipe</param>
     /// <param name="reviews">The reviews for this recipe</param>
     /// <param name="starRating">The rating for this recipe</param>
-    public Recipe(string name, string imagePath, int calories, int prepTimeMinutes, List<string> tags, List<Ingredient> ingredients, List<string> steps, string UID, List<string> reviews = null, int starRating = 5, string key = "")
+    public Recipe(string name, string imagePath, int calories, int prepTimeMinutes, List<string> tags, List<Ingredient> ingredients, List<string> steps, List<string> reviews, int starRating = 5, string key = "")
     {
         
         Name = name;

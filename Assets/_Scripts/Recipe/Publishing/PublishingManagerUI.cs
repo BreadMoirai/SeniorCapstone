@@ -40,6 +40,7 @@ public class PublishingManagerUI : MonoBehaviour, IPanel
     private List<Ingredient> ingredients = new List<Ingredient>();
     private List<string> directions = new List<string>();
     private List<string> tags = new List<string>();
+    private List<string> reviews = null;
 
     private string recipeName;
     private int calories;
@@ -187,7 +188,7 @@ public class PublishingManagerUI : MonoBehaviour, IPanel
             return;
 
         // create recipe 
-        Recipe newRecipe = new Recipe(recipeName, "", calories, minutesPrep, tags, ingredients, directions, LoginService.Instance.User.UserId);
+        Recipe newRecipe = new Recipe(recipeName, "", calories, minutesPrep, tags, ingredients, directions, reviews);
 
         // send for publish
         DatabaseManager.Instance.PublishNewRecipe(newRecipe, CameraManager.PathOfCurrentImage);

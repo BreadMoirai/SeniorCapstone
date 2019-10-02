@@ -14,6 +14,8 @@ public class RecipeManagerUI : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject labelPrefab;
     [SerializeField] private GameObject infoPrefab;
+    [SerializeField] private GameObject reviewPrefab;
+    [SerializeField] private GameObject moreReviewsButton;
 
     [Header("Dish Info")]
     [SerializeField] private Image dishImage;
@@ -30,9 +32,9 @@ public class RecipeManagerUI : MonoBehaviour
     [SerializeField] private GameObject favoriteButton;
     [SerializeField] private GameObject unfavoriteButton;
 
-    [SerializeField] private ReviewController reviewPanel;
+    
 
-    [SerializeField] private GameObject surveyGoldStars;
+
 
     private Sprite currentRecipeSprite;
     
@@ -126,6 +128,9 @@ public class RecipeManagerUI : MonoBehaviour
 
                 reviewText.text = newRecipe.Reviews[i];
             }
+            Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans).GetComponentInChildren<Text>();
+            
         }
         else
         {
@@ -237,70 +242,11 @@ public class RecipeManagerUI : MonoBehaviour
         }
     }
 
-    #region Rating system methods
-
-    /// <summary>
-    /// Updates the rating survey UI with the number of stars tapped.
-    /// </summary>
-    /// <param name="ratingStar">The star tapped.</param>
-    public void RateRecipe(GameObject ratingStar)
+    public void ShowMoreReviews()
     {
-        try
-        {
-            int rating = ratingStar.transform.GetSiblingIndex() + 1;
-
-            // The DB method makes a circular reference to this class and runs UpdateSurveyRating()
-            // to update the survey UI.
-            DatabaseManager.Instance.UpdateUserRatingForRecipe(currentRecipe.Key, rating);
-        }
-        catch (System.Exception)
-        {
-        }
+        canvas.SetActive(false);
+        ReviewManagerUI.Instance.Enable();
     }
-
-    /// <summary>
-    /// Draws the gold stars on the rating survey.
-    /// </summary>
-    /// <param name="rating">The number of stars to enable.</param>
-    public void DrawSurveyRating(int rating)
-    {
-        if (rating > surveyGoldStars.transform.childCount)
-            throw new UnityException($"Rating {rating} was higher than stars available ({surveyGoldStars.transform.childCount}).");
-
-        // Clear previous rating
-        foreach (Transform child in surveyGoldStars.transform)
-            child.gameObject.SetActive(false);
-
-        // Display new rating
-        for (int i = 0; i < rating; i++)
-        {
-            var star = surveyGoldStars.transform.GetChild(i);
-            star.gameObject.SetActive(true);
-        }
-    }
-
-    /// <summary>
-    /// Draws the community star rating in the info header.
-    /// </summary>
-    /// <param name="rating"></param>
-    public void DrawCommunityRating(int rating)
-    {
-        if (rating > starRatingTrans.childCount)
-            throw new UnityException($"Rating {rating} was higher than stars available ({surveyGoldStars.transform.childCount}).");
-
-        // Clear previous rating
-        foreach (Transform child in starRatingTrans)
-            child.gameObject.SetActive(false);
-
-        // Display new rating
-        for (int i = 0; i < rating; i++)
-        {
-            var star = starRatingTrans.GetChild(i);
-            star.gameObject.SetActive(true);
-        }
-    } 
-
-    #endregion
 
     public void Test()
     {

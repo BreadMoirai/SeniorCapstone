@@ -33,10 +33,9 @@ public class ReviewManagerUI : MonoBehaviour
                 Destroy(verticalGroupTrans.GetChild(i).gameObject);
         }
 
-        Text reviewView = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-            verticalGroupTrans).GetComponentInChildren<Text>();
+        
 
-        reviewView.text = "More Reviews";
+        labelPrefab.GetComponentInChildren<Text>().text = "More Reviews";
 
         for (int i = newRecipe.Reviews.Length - 1; i >= 0; i--)
         {

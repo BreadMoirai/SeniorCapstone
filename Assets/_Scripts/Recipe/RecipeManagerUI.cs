@@ -178,8 +178,7 @@ public class RecipeManagerUI : MonoBehaviour
     {
         Sprite minus = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/_Art/UI/Minus.png", typeof(Sprite));
         Sprite plus = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/_Art/UI/Plus.png", typeof(Sprite));
-        Instance.verticalGroupTrans.GetChild(1).GetComponentInChildren<Button>().GetComponent<Image>().sprite = plus;
-        
+        RecipeManagerUI.Instance.verticalGroupTrans.GetChild(1).GetComponentInChildren<Button>().GetComponent<Image>().sprite = plus;
     }
 
     public void Enable()

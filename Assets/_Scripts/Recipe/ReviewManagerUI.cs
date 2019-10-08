@@ -45,7 +45,7 @@ public class ReviewManagerUI : MonoBehaviour
         canvas.SetActive(true);
     }
 
-    public void GenerateReviews()
+    public void GenerateReviews() 
     {
         if (reviewCounter == 0)
         {

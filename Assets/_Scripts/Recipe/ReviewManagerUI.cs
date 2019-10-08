@@ -8,11 +8,13 @@ public class ReviewManagerUI : MonoBehaviour
 {
     public static Recipe thisRecipe;
     public static ReviewManagerUI Instance;
+    public static int reviewCounter;
     [SerializeField] private GameObject canvas;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject labelPrefab;
     [SerializeField] private GameObject infoPrefab;
+    [SerializeField] private GameObject moreReviewsButton;
 
     [SerializeField] private Transform verticalGroupTrans;
 
@@ -25,7 +27,7 @@ public class ReviewManagerUI : MonoBehaviour
     public void InitReviewUI(Recipe newRecipe)
     {
         thisRecipe = newRecipe;
-
+        reviewCounter = thisRecipe.Reviews.Length;
         // remove any previous ingredients and directions
         if (verticalGroupTrans.childCount > 1)
         {
@@ -33,34 +35,56 @@ public class ReviewManagerUI : MonoBehaviour
                 Destroy(verticalGroupTrans.GetChild(i).gameObject);
         }
 
-        
-
         labelPrefab.GetComponentInChildren<Text>().text = "More Reviews";
 
-        for (int i = newRecipe.Reviews.Length - 1; i >= 0; i--)
-        {
-            Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+        Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
                 verticalGroupTrans).GetComponentInChildren<Text>();
-
-            reviewText.text = newRecipe.Reviews[i];
-        }
+        test.text = "Show More Reviews";
+        GenerateReviews();
         
         canvas.SetActive(true);
     }
 
-    public void ShowMoreReviews()
+    public void GenerateReviews()
     {
-        ReviewManagerUI.Instance.Enable();
+        if (reviewCounter == 0)
+        {
+
+        }
+        else if (reviewCounter < 5)
+        {
+            for (int i = reviewCounter - 1; i >= 0; i--)
+            {
+                Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans).GetComponentInChildren<Text>();
+
+                reviewText.text = thisRecipe.Reviews[i];
+            }
+            Destroy(verticalGroupTrans.GetComponentInChildren<Button>());
+            reviewCounter = 0;
+        }
+        else
+        {
+            for (int i = reviewCounter - 1; i >= (reviewCounter - 5); i--)
+            {
+                Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans).GetComponentInChildren<Text>();
+
+                reviewText.text = thisRecipe.Reviews[i];
+            }
+            reviewCounter -= 5;
+        }
+        verticalGroupTrans.GetComponentInChildren<Button>().transform.SetAsLastSibling();
     }
 
     public void Enable()
     {
-        this.canvas.SetActive(true);
+        canvas.SetActive(true);
     }
 
     public void Disable()
     {
-        this.canvas.SetActive(false);
+        canvas.SetActive(false);
         RecipeManagerUI.Instance.Enable();
     }
 }

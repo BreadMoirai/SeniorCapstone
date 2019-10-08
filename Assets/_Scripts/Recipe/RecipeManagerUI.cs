@@ -67,11 +67,15 @@ public class RecipeManagerUI : MonoBehaviour
         // remove any previous ingredients and directions
         if (verticalGroupTrans.childCount > 1)
         {
-            for (int i = 1; i < verticalGroupTrans.childCount; i++)
+            for (int i = 0; i < verticalGroupTrans.childCount; i++)
                 Destroy(verticalGroupTrans.GetChild(i).gameObject);
         }
 
-        #region Load ingredients
+        // create ingredients label
+        Text labelINText = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+            verticalGroupTrans).GetComponentInChildren<Text>();
+
+        labelINText.text = "Ingredients";
 
         // update ingredients
         for (int i = 0; i < newRecipe.Ingredients.Length; i++)
@@ -87,9 +91,10 @@ public class RecipeManagerUI : MonoBehaviour
         #region Load directions
 
         // create directions label
-        Text labelText = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+        Text labelDRText = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
             verticalGroupTrans).GetComponentInChildren<Text>();
-        labelText.text = "Directions";
+
+        labelDRText.text = "Directions";
 
         // update directions
         for (int i = 0; i < newRecipe.Steps.Length; i++)
@@ -130,7 +135,7 @@ public class RecipeManagerUI : MonoBehaviour
             }
             Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
                     verticalGroupTrans).GetComponentInChildren<Text>();
-            
+            test.text = $"Show all {newRecipe.Reviews.Length} reviews";
         }
         else
         {
@@ -169,16 +174,12 @@ public class RecipeManagerUI : MonoBehaviour
         canvas.SetActive(true);
     }
 
-    public void ShowReviewPanel()
+    public void Transform()
     {
-        reviewPanel.Reset();
-        reviewPanel.recipe = currentRecipe;
-        reviewPanel.gameObject.SetActive(true);
-    }
-
-    public void HideRewiewPanel()
-    {
-        reviewPanel.gameObject.SetActive(false);
+        Sprite minus = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/_Art/UI/Minus.png", typeof(Sprite));
+        Sprite plus = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/_Art/UI/Plus.png", typeof(Sprite));
+        Instance.verticalGroupTrans.GetChild(1).GetComponentInChildren<Button>().GetComponent<Image>().sprite = plus;
+        
     }
 
     public void Enable()

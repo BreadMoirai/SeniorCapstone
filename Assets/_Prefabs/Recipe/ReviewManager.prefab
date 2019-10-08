@@ -905,6 +905,8 @@ MonoBehaviour:
     type: 3}
   infoPrefab: {fileID: 3658510890289634487, guid: 2b85f5f77f3588d41978723b0f1a30a6,
     type: 3}
+  moreReviewsButton: {fileID: 7597316637417848981, guid: 7d50d668f17cade4d99b04a0e0314960,
+    type: 3}
   verticalGroupTrans: {fileID: 7463201130817504220}
 --- !u!1 &7034497981170481086
 GameObject:

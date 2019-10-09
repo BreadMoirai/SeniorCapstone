@@ -46,7 +46,7 @@ public class ReviewController : MonoBehaviour
     //firebase object
     private DatabaseReference databaseReference;
     private bool hasAttemptFinished;
-    private List<Review> reviewList = new List<Review>();
+    public List<Review> reviewList = new List<Review>();
     #region Public Methods
 
     public void DidTapSubmit()

@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class ReviewManagerUI : MonoBehaviour
 {
-    public static Recipe thisRecipe;
     public static ReviewManagerUI Instance;
+    public static Recipe currentRecipe;
+    public List<Review> reviewList = new List<Review>();
     public static int reviewCounter;
     [SerializeField] private GameObject canvas;
 
@@ -24,10 +25,13 @@ public class ReviewManagerUI : MonoBehaviour
             Instance = this;
     }
 
-    public void InitReviewUI(Recipe newRecipe)
+    public void InitReviewUI(Recipe recipe)
     {
-        thisRecipe = newRecipe;
-        reviewCounter = thisRecipe.Reviews.Length;
+        ReviewController rc = new ReviewController();
+        currentRecipe = recipe;
+        rc.getReviews(currentRecipe.Key);
+        reviewList = rc.reviewList;
+        reviewCounter = reviewList.Count;
         // remove any previous ingredients and directions
         if (verticalGroupTrans.childCount > 1)
         {
@@ -58,7 +62,7 @@ public class ReviewManagerUI : MonoBehaviour
                 Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
                     verticalGroupTrans).GetComponentInChildren<Text>();
 
-                reviewText.text = thisRecipe.Reviews[i];
+                reviewText.text = reviewList[i].content;
             }
             Destroy(verticalGroupTrans.GetComponentInChildren<Button>());
             reviewCounter = 0;
@@ -70,7 +74,7 @@ public class ReviewManagerUI : MonoBehaviour
                 Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
                     verticalGroupTrans).GetComponentInChildren<Text>();
 
-                reviewText.text = thisRecipe.Reviews[i];
+                reviewText.text = reviewList[i].content;
             }
             reviewCounter -= 5;
         }

@@ -37,7 +37,14 @@ public class RecipeManagerUI : MonoBehaviour
 
 
     private Sprite currentRecipeSprite;
-    
+
+    private List<GameObject> ingredientObjects = new List<GameObject>();
+    private bool ingredientsAreActive = true;
+    private List<GameObject> directionsObjects = new List<GameObject>();
+    private bool directionsAreActive = true;
+    private List<GameObject> reviewsObjects = new List<GameObject>();
+    private bool reviewsAreActive = true;
+
     private void Awake()
     {
         if (Instance == null)
@@ -72,16 +79,21 @@ public class RecipeManagerUI : MonoBehaviour
         }
 
         // create ingredients label
-        Text labelINText = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-            verticalGroupTrans).GetComponentInChildren<Text>();
+        GameObject ingredientLabel = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+            verticalGroupTrans);
+        ingredientLabel.transform.Find("Button").GetComponentInChildren<Button>().onClick.AddListener(ToggleIngredientState);
+        Text labelINText = ingredientLabel.GetComponentInChildren<Text>();
 
         labelINText.text = "Ingredients";
 
         // update ingredients
         for (int i = 0; i < newRecipe.Ingredients.Length; i++)
         {
-            Text infoText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                verticalGroupTrans).GetComponentInChildren<Text>();
+            GameObject ingredientInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                verticalGroupTrans);
+            ingredientObjects.Add(ingredientInfo);
+
+            Text infoText = ingredientInfo.GetComponentInChildren<Text>();
 
             infoText.text = newRecipe.Ingredients[i].ToString();
         }
@@ -91,16 +103,21 @@ public class RecipeManagerUI : MonoBehaviour
         #region Load directions
 
         // create directions label
-        Text labelDRText = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-            verticalGroupTrans).GetComponentInChildren<Text>();
+        GameObject directionLabel = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+            verticalGroupTrans);
+        directionLabel.transform.Find("Button").GetComponentInChildren<Button>().onClick.AddListener(ToggleDirectionState);
+        Text labelDRText = directionLabel.GetComponentInChildren<Text>();
 
         labelDRText.text = "Directions";
 
         // update directions
         for (int i = 0; i < newRecipe.Steps.Length; i++)
         {
-            Text infoText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                verticalGroupTrans).GetComponentInChildren<Text>();
+            GameObject directionInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                verticalGroupTrans);
+            directionsObjects.Add(directionInfo);
+
+            Text infoText = directionInfo.GetComponentInChildren<Text>();
 
             infoText.text = newRecipe.Steps[i];
         }
@@ -108,9 +125,11 @@ public class RecipeManagerUI : MonoBehaviour
         #endregion
 
         #region  Create rating prompt
-
-        Button ratingButton = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-            verticalGroupTrans).GetComponentInChildren<Button>();
+        GameObject ratingLabel = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+            verticalGroupTrans);
+        ratingLabel.transform.Find("Button").GetComponentInChildren<Button>().enabled = false;
+        ratingLabel.transform.Find("Button").GetComponentInChildren<Button>().image.enabled = false;
+        Button ratingButton = ratingLabel.GetComponentInChildren<Button>();
 
         ratingButton.enabled = true;
         ratingButton.interactable = true;
@@ -118,8 +137,11 @@ public class RecipeManagerUI : MonoBehaviour
         ratingButton.onClick.AddListener(ShowReviewPanel);
 
         //view reviews
-        Text reviewView = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-            verticalGroupTrans).GetComponentInChildren<Text>();
+        GameObject reviewLabel = Instantiate(labelPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+            verticalGroupTrans);
+        reviewLabel.transform.Find("Button").GetComponentInChildren<Button>().onClick.AddListener(ToggleReviewState);
+
+        Text reviewView = reviewLabel.GetComponentInChildren<Text>();
 
         reviewView.text = "Reviews";
 
@@ -128,8 +150,11 @@ public class RecipeManagerUI : MonoBehaviour
         {
             for (int i = newRecipe.Reviews.Length - 1; i >= newRecipe.Reviews.Length - 5; i--)
             {
-                Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                    verticalGroupTrans).GetComponentInChildren<Text>();
+                GameObject reviewInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans);
+                reviewsObjects.Add(reviewInfo);
+
+                Text reviewText = reviewInfo.GetComponentInChildren<Text>();
 
                 reviewText.text = newRecipe.Reviews[i];
             }
@@ -141,8 +166,11 @@ public class RecipeManagerUI : MonoBehaviour
         {
             for (int i = newRecipe.Reviews.Length - 1; i >= 0; i--)
             {
-                Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                    verticalGroupTrans).GetComponentInChildren<Text>();
+                GameObject reviewInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans);
+                reviewsObjects.Add(reviewInfo);
+
+                Text reviewText = reviewInfo.GetComponentInChildren<Text>();
 
                 reviewText.text = newRecipe.Reviews[i];
             }
@@ -174,11 +202,43 @@ public class RecipeManagerUI : MonoBehaviour
         canvas.SetActive(true);
     }
 
-    public void Transform()
+    public void ShowReviewPanel()
     {
-        Sprite minus = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/_Art/UI/Minus.png", typeof(Sprite));
-        Sprite plus = (Sprite)UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/_Art/UI/Plus.png", typeof(Sprite));
-        RecipeManagerUI.Instance.verticalGroupTrans.GetChild(1).GetComponentInChildren<Button>().GetComponent<Image>().sprite = plus;
+        reviewPanel.Reset();
+        reviewPanel.recipe = currentRecipe;
+        reviewPanel.gameObject.SetActive(true);
+    }
+
+    public void HideRewiewPanel()
+    {
+        reviewPanel.gameObject.SetActive(false);
+    }
+
+    public void ToggleIngredientState()
+    {
+        ingredientsAreActive = !ingredientsAreActive;
+        foreach (var item in ingredientObjects)
+        {
+            item.SetActive(ingredientsAreActive);
+        }
+    }
+
+    public void ToggleDirectionState()
+    {
+        directionsAreActive = !directionsAreActive;
+        foreach (var item in directionsObjects)
+        {
+            item.SetActive(directionsAreActive);
+        }
+    }
+
+    public void ToggleReviewState()
+    {
+        reviewsAreActive = !reviewsAreActive;
+        foreach (var item in reviewsObjects)
+        {
+            item.SetActive(reviewsAreActive);
+        }
     }
 
     public void Enable()
@@ -194,6 +254,12 @@ public class RecipeManagerUI : MonoBehaviour
     public void Disable()
     {
         canvas.SetActive(false);
+        ingredientObjects.Clear();
+        directionsObjects.Clear();
+        reviewsObjects.Clear();
+        ingredientsAreActive = true;
+        directionsAreActive = true;
+        reviewsAreActive = true;
     }
 
     private IEnumerator WaitForImage()

@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 4099906084552218920}
   - component: {fileID: 4423434425495745589}
   - component: {fileID: 7227683246466977254}
+  - component: {fileID: 346685132716573983}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -153,9 +154,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1376281189734692571, guid: bfdac76055442b545a462a08a5fbcdf4,
-          type: 3}
-        m_MethodName: Transform
+      - m_Target: {fileID: 346685132716573983}
+        m_MethodName: ToggleSprite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -167,6 +167,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &346685132716573983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347056556496586181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe4c3e6424826548843cf8ba765b56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onImage: {fileID: 21300000, guid: fb477be78dbfa4841b380af1b81bfb1d, type: 3}
+  offImage: {fileID: 21300000, guid: 276ed812121742a449e384672526e249, type: 3}
 --- !u!1 &4783492743787379947
 GameObject:
   m_ObjectHideFlags: 0

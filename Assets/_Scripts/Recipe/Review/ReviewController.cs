@@ -35,6 +35,8 @@ public class ReviewController : MonoBehaviour
     [SerializeField] private InputField inputField;
     [SerializeField] private Text recipeNameText;
 
+    public Action ReviewCallback;
+
     #endregion
     //Database endpoint
     public static string Endpoint = "https://regen-66cf8.firebaseio.com/";
@@ -72,8 +74,9 @@ public class ReviewController : MonoBehaviour
     }
 
     #endregion
-    public void getReviews(string recipeID)
+    public void getReviews(string recipeID, Action callback)
     {
+        ReviewCallback = callback;
         hasAttemptFinished = false;
         reviewList.Clear();
         StartCoroutine(WaitForReviews());
@@ -110,6 +113,9 @@ public class ReviewController : MonoBehaviour
     private IEnumerator WaitForReviews()
     {
         yield return new WaitUntil(() => hasAttemptFinished);
+
+        ReviewCallback();
+
         foreach (Review r in reviewList)
         {
             Debug.Log(r.userId);

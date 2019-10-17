@@ -18,6 +18,7 @@ public class ReviewManagerUI : MonoBehaviour
     [SerializeField] private GameObject moreReviewsButton;
 
     [SerializeField] private Transform verticalGroupTrans;
+    private ReviewController rc;
 
     private void Awake()
     {
@@ -25,13 +26,19 @@ public class ReviewManagerUI : MonoBehaviour
             Instance = this;
     }
 
+
     public void InitReviewUI(Recipe recipe)
     {
-        ReviewController rc = new ReviewController();
+        rc = gameObject.AddComponent<ReviewController>();
         currentRecipe = recipe;
-        rc.getReviews(currentRecipe.Key);
+        rc.getReviews(currentRecipe.Key, HandleReviews);
+    }
+
+    void HandleReviews()
+    {
         reviewList = rc.reviewList;
         reviewCounter = reviewList.Count;
+
         // remove any previous ingredients and directions
         if (verticalGroupTrans.childCount > 1)
         {
@@ -44,10 +51,13 @@ public class ReviewManagerUI : MonoBehaviour
         Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
                 verticalGroupTrans).GetComponentInChildren<Text>();
         test.text = "Show More Reviews";
-        GenerateReviews();
-        
+
         canvas.SetActive(true);
+
+        GenerateReviews();
+
     }
+
 
     public void GenerateReviews() 
     {

@@ -19,6 +19,7 @@ public class ReviewManagerUI : MonoBehaviour
 
     [SerializeField] private Transform verticalGroupTrans;
     private ReviewController rc;
+    private GameObject reviewButton;
 
     private void Awake()
     {
@@ -29,7 +30,8 @@ public class ReviewManagerUI : MonoBehaviour
 
     public void InitReviewUI(Recipe recipe)
     {
-        rc = gameObject.AddComponent<ReviewController>();
+        if(gameObject.GetComponent<ReviewController>() == null)
+            rc = gameObject.AddComponent<ReviewController>();
         currentRecipe = recipe;
         rc.getReviews(currentRecipe.Key, HandleReviews);
     }
@@ -42,14 +44,15 @@ public class ReviewManagerUI : MonoBehaviour
         // remove any previous ingredients and directions
         if (verticalGroupTrans.childCount > 1)
         {
-            for (int i = 1; i < verticalGroupTrans.childCount; i++)
+            for (int i = 2; i < verticalGroupTrans.childCount; i++)
                 Destroy(verticalGroupTrans.GetChild(i).gameObject);
         }
 
         labelPrefab.GetComponentInChildren<Text>().text = "More Reviews";
-
-        Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                verticalGroupTrans).GetComponentInChildren<Text>();
+        labelPrefab.transform.Find("Button").GetComponentInChildren<Button>().enabled = false;
+        labelPrefab.transform.Find("Button").GetComponentInChildren<Button>().image.enabled = false;
+        
+        Text test = moreReviewsButton.GetComponentInChildren<Text>();
         test.text = "Show More Reviews";
 
         canvas.SetActive(true);
@@ -74,7 +77,9 @@ public class ReviewManagerUI : MonoBehaviour
 
                 reviewText.text = reviewList[i].content;
             }
-            Destroy(verticalGroupTrans.GetComponentInChildren<Button>());
+            moreReviewsButton.GetComponentInChildren<Button>().transform.SetAsLastSibling();
+            moreReviewsButton.GetComponent<Button>().enabled = false;
+            moreReviewsButton.GetComponentInChildren<Text>().text = "No More Reviews";
             reviewCounter = 0;
         }
         else
@@ -84,11 +89,12 @@ public class ReviewManagerUI : MonoBehaviour
                 Text reviewText = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
                     verticalGroupTrans).GetComponentInChildren<Text>();
 
-                reviewText.text = reviewList[i].content;
+                reviewText.text = rc.reviewList[i].content;
             }
             reviewCounter -= 5;
+            moreReviewsButton.GetComponentInChildren<Button>().transform.SetAsLastSibling();
         }
-        verticalGroupTrans.GetComponentInChildren<Button>().transform.SetAsLastSibling();
+        
     }
 
     public void Enable()

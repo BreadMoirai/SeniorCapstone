@@ -45,6 +45,10 @@ public class RecipeManagerUI : MonoBehaviour
     private List<GameObject> reviewsObjects = new List<GameObject>();
     private bool reviewsAreActive = true;
 
+    private List<Review> reviewList = new List<Review>();
+    private ReviewController rc;
+    private int reviewCounter;
+
     private void Awake()
     {
         if (Instance == null)
@@ -60,6 +64,8 @@ public class RecipeManagerUI : MonoBehaviour
     {
         currentRecipe = newRecipe;
         dishImage.sprite = newRecipe.ImageSprite;
+        if (gameObject.GetComponent<ReviewController>() == null)
+            rc = gameObject.AddComponent<ReviewController>();
 
         #region Update recipe header info
 
@@ -146,36 +152,9 @@ public class RecipeManagerUI : MonoBehaviour
         reviewView.text = "Reviews";
 
         //update reviews
-        if(newRecipe.Reviews.Length > 5)
-        {
-            for (int i = newRecipe.Reviews.Length - 1; i >= newRecipe.Reviews.Length - 5; i--)
-            {
-                GameObject reviewInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                    verticalGroupTrans);
-                reviewsObjects.Add(reviewInfo);
-
-                Text reviewText = reviewInfo.GetComponentInChildren<Text>();
-
-                reviewText.text = newRecipe.Reviews[i];
-            }
-            Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                    verticalGroupTrans).GetComponentInChildren<Text>();
-            test.text = $"Show all {newRecipe.Reviews.Length} reviews";
-        }
-        else
-        {
-            for (int i = newRecipe.Reviews.Length - 1; i >= 0; i--)
-            {
-                GameObject reviewInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
-                    verticalGroupTrans);
-                reviewsObjects.Add(reviewInfo);
-
-                Text reviewText = reviewInfo.GetComponentInChildren<Text>();
-
-                reviewText.text = newRecipe.Reviews[i];
-            }
-        }
+        rc.getReviews(currentRecipe.Key, HandleReviews);
         
+
 
         loadingObject.SetActive(true);
         StartCoroutine(WaitForImage());
@@ -202,11 +181,52 @@ public class RecipeManagerUI : MonoBehaviour
         canvas.SetActive(true);
     }
 
+    void HandleReviews()
+    {
+        reviewList = rc.reviewList;
+        reviewCounter = reviewList.Count;
+
+        if(reviewCounter == 0)
+        {
+
+        }
+        else if (reviewCounter > 5)
+        {
+            for (int i = reviewCounter - 1; i >= (reviewCounter - 5); i--)
+            {
+                GameObject reviewInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans);
+                reviewsObjects.Add(reviewInfo);
+
+                Text reviewText = reviewInfo.GetComponentInChildren<Text>();
+
+                reviewText.text = reviewList[i].content;
+            }
+            Text test = Instantiate(moreReviewsButton, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans).GetComponentInChildren<Text>();
+            test.text = $"Show all {reviewList.Count} reviews";
+        }
+        else
+        {
+            for (int i = reviewCounter - 1; i >= 0; i--)
+            {
+                GameObject reviewInfo = Instantiate(infoPrefab, verticalGroupTrans.transform.position, infoPrefab.transform.rotation,
+                    verticalGroupTrans);
+                reviewsObjects.Add(reviewInfo);
+
+                Text reviewText = reviewInfo.GetComponentInChildren<Text>();
+
+                reviewText.text = reviewList[i].content;
+            }
+        }
+    }
+
     public void ShowReviewPanel()
     {
         reviewPanel.Reset();
         reviewPanel.recipe = currentRecipe;
         reviewPanel.gameObject.SetActive(true);
+        //gameObject.transform.Find("RatingSurveySection").SetAsLastSibling();
     }
 
     public void HideRewiewPanel()

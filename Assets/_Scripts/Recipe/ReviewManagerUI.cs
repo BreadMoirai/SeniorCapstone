@@ -33,6 +33,13 @@ public class ReviewManagerUI : MonoBehaviour
         if(gameObject.GetComponent<ReviewController>() == null)
             rc = gameObject.AddComponent<ReviewController>();
         currentRecipe = recipe;
+
+        moreReviewsButton.GetComponent<Button>().transform.SetAsFirstSibling();
+        if (verticalGroupTrans.childCount > 1)
+        {
+            for (int i = 2; i < verticalGroupTrans.childCount; i++)
+                Destroy(verticalGroupTrans.GetChild(i).gameObject);
+        }
         rc.getReviews(currentRecipe.Key, HandleReviews);
     }
 
@@ -41,12 +48,7 @@ public class ReviewManagerUI : MonoBehaviour
         reviewList = rc.reviewList;
         reviewCounter = reviewList.Count;
 
-        // remove any previous ingredients and directions
-        if (verticalGroupTrans.childCount > 1)
-        {
-            for (int i = 2; i < verticalGroupTrans.childCount; i++)
-                Destroy(verticalGroupTrans.GetChild(i).gameObject);
-        }
+        
 
         labelPrefab.GetComponentInChildren<Text>().text = "More Reviews";
         labelPrefab.transform.Find("Button").GetComponentInChildren<Button>().enabled = false;
@@ -105,6 +107,8 @@ public class ReviewManagerUI : MonoBehaviour
     public void Disable()
     {
         canvas.SetActive(false);
+        reviewList.Clear();
+        moreReviewsButton.GetComponent<Button>().enabled = true;
         RecipeManagerUI.Instance.Enable();
     }
 }

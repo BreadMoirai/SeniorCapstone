@@ -1,7 +1,7 @@
+language: ruby
+
 # use a Mac OSX image
 os: osx
-sudo: required
-language: node_js
 
 branches:
   only:
@@ -15,25 +15,11 @@ notifications:
     urls: 
       - secure: "L4hPgsSc613qxYF5dETa0WjmR4RNgUMNby5Gi+jwHcbEI1H7qe7IHxaAWc5fO7l3FsvwN2dOJvmlEpUE2nDyMa8nuHvzDxC1mpuo3amF6bMmeO6sROlTY4dxp9FeuT6G+PYImg2ovD63CGHSKXQ19vwWAVrosSrUij1Cki43PVCb3Ub8pG/Y1r59DrA/NXA5Olp2a2ECD22To5IkZ0KcnY9qDuoMGA/eoFnDAqtiu9PVVhcfu37hlxXiM1U1U7TRdJdYYy8fcYzIPXWHBvmtppreN33r+Zxujr+aeTY/WJwQmYnZLSuSn2UHMBUIJqQvF6pzgXGervrhbQbk2nW4oFGEohbzHDbAOnvOk1oqCMU8tPXxZP26ysSVnNYFstH1OfMiKWQPqLiGCPW1htUU2c2ZsveQRBdXWZHiThhTXJmWiuw0JreFjjbtp9sVVQRJYlCE3Y1lRDqGjPMb/4eJPUIqZslyRIx9rr16S8MKho56+1DYlvjTXsPp/VsnhjnMm+n1+pwPVA4O8UQWBPDwTS+UzppzImQJtI1PEe9rOoQ8q2BDNxXU3F1I+88208HlIBJ69TM70u34Jt7W8OdeR4cyY1GsVuNxWkZB2TGgrOaTXxJHy8qeQTDxJar/LBriPpg0RMG6nsQVf2VMWM834RSU94yQ1KrgZjnc0J6xNGo="
 
-node_js:
-  - "node"
-
-#addons: 
-#  homebrew:
-#    taps: sttz/homebrew-tap
-#    casks: install-unity
-#    update: true
-#
-#
-## run the script to download and install Unity editor
-#install:
-#  - sudo install-unity install unityhub://2018.3.0f2/6e9a27477296 --packages Unity Android --yes --yolo
-cache: 
-  npm: true
+# run the script to download and install Unity editor
 install:
-  - npm install -g unity-installer
-  - unity-installer "^2018.3"
+  - gem install u3d
+  - u3d install
 
 # run the script for unit tests and builds
 script:
-  - install-unity run -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml 
+  - u3d run -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml 

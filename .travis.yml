@@ -17,8 +17,8 @@ notifications:
 
 # run the script to download and install Unity editor
 install:
-  - gem install u3d
-  - u3d install
+  - sudo gem install u3d
+  - sudo u3d install
 
 # run the script for unit tests and builds
 script:

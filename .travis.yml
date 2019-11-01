@@ -17,7 +17,6 @@ notifications:
 
 node_js:
   - "node"
-  - "4"
 
 #addons: 
 #  homebrew:
@@ -33,7 +32,7 @@ cache:
   npm: true
 install:
   - npm install -g unity-installer
-  - unity-installer ^2018.3
+  - unity-installer '^2018.3'
 
 # run the script for unit tests and builds
 script:

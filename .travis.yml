@@ -1,0 +1,26 @@
+language: generic
+
+# use a Mac OSX image
+os: osx
+
+branches:
+  only:
+    - development
+    - travisci
+
+
+#notifications:
+#  email:
+#    on_success: never
+#    on_failure: change
+
+
+# run the script to download and install Unity editor
+install:
+  - echo 'Downloading Unity 2018.3.0.f2'
+  - brew install sttz/tap/install-unity
+  - install-unity install unityhub://2018.3.0f2/6e9a27477296
+
+# run the script for unit tests and builds
+script:
+  - install-unity run -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml 

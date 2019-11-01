@@ -24,6 +24,7 @@ addons:
 
 # run the script to download and install Unity editor
 install:
+  - install-unity install unityhub://2018.3.0f2/6e9a27477296 --yes
   - install-unity install unityhub://2018.3.0f2/6e9a27477296 --packages Android --yes
 
 # run the script for unit tests and builds

@@ -19,7 +19,10 @@ notifications:
 install:
   - sudo gem install u3d
   - sudo u3d install
+  - sudo gem install gist
 
 # run the script for unit tests and builds
 script:
-  - u3d run -- -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml 
+  - u3d run -- -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml --trace
+  - secure: "mq/mpb61HvMU5UCKll+54gJxtCWMVZ7kJqWYgXrPbKmw0Vedvdyhoixr1uw73/SoVb2jT2XD9nlW9cQQ5OzgupZpnmBODP9f3GlNPtyloT9SMehUv9FgnzJljHi6cQ97wbAKsW/2hhCBzyJJQQCB0zirUYpi81K4diIfDVDg1+Y9XmwbKoP4RrevY8uhLMSo+HUhbmVkh7mLwotwvNg50q+q/Aiw0bxHRDIMTcXcnDSIjIp/8XFFdJFcPIF1hybr9keN8o3Ll5AAR/BURg1sRWIACWvyJ8X9gEjZI5vA3RwMSIMzAQPrLRozdo2y+sot0Qk7oo9L4uIOHqU+/lrsm8MzlqbBun6JPRBbm7lTVVEexmI8aWsMu6PSBfpKct2TVUSTmzatIwjgMPyid5W8CQ8tH0JZGZYnwkFOpf3zg8/CQI6VWVxGP5bOzH7nU42PwsfJm+CPCnt0CgwmM9JRxoQKxdL0h3XiEXO7Gt4pB3t9wCUTaMbsLEzxJ/K8sNxqPcW8Hp5BQFqcyl382dgT+4JdUZddXwv2kKQtvVZVWXGQtbzaajz3B8cgxJhDpfOocX9usWiROIEad9ZIdm/kPAYQNsDyuVaoWm85MqIa3MLOfoYnVGmUAJZYW2pdDd0bRvMp2a6UpBJAiEfRTitPpXIIO0COxoBrXPSgXyrochQ="
+  - gist results.xml

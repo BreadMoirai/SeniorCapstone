@@ -24,12 +24,12 @@ env:
 # run the script to download and install Unity editor
 install:
   - sudo gem install u3d
-  - sudo u3d install
+  - sudo u3d install -p Unity,Android
   - sudo gem install gist
 
 # run the script for unit tests and builds
 script:
-  - u3d run -- -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml --trace
+  - u3d run --verbose -t -- -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml
   - ls results.xml
   - echo $GIST_KEY > ~/.gist
   - gist results.xml

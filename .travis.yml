@@ -25,7 +25,7 @@ install:
 script:
 - u3d run --verbose -t -- -batchmode -nographics -runEditorTests -projectPath . -testPlatform
   Android -testResults results.xml -logFile log.txt -manualLicenseFile Unity_v2018.x.ulf
-- u3d run --verbost -t -- -batchmode -returnlicense -logFile -quit
+- u3d run --verbose -t -- -batchmode -returnlicense -logFile -quit
 - ls results.xml
 - ls log.txt
 - echo $GIST_KEY > ~/.gist

@@ -79,7 +79,23 @@ public class DatabaseManager : MonoBehaviour
             }
         }
     }
+    public bool checkRecipeAuthorID(Recipe R)
+    {
 
+        Firebase.Auth.FirebaseUser user = auth.CurrentUser;
+        if (user != null)
+        {
+            if (user == R.AuthorID)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            print("No user logged in.");
+            return false;
+        }
+    }
 
 
     /**
@@ -563,6 +579,29 @@ public class DatabaseManager : MonoBehaviour
                                     var error = e.Message;
                                 }
                             });
+        }
+    }
+
+    public void deleteReview(string recipeKey)
+    {
+        if (user != null)
+        {
+            try
+            {
+                FirebaseDatabase.DefaultInstance
+                    .GetReference("reviews")
+                    .Child($"{recipeKey}")
+                    .Child($"{user.UserId}")
+                    .RemoveValueAsync();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        else
+        {
+            NotificationManager.Instance.ShowNotification("You must be logged in to delete a review.");
         }
     }
 

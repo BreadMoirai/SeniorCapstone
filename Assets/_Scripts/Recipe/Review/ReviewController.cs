@@ -34,6 +34,9 @@ public class ReviewController : MonoBehaviour
     [SerializeField] private StarController stars;
     [SerializeField] private InputField inputField;
     [SerializeField] private Text recipeNameText;
+    [SerializeField] private GameObject deleteButton;
+
+    public Action ReviewCallback;
 
     public Action ReviewCallback;
 
@@ -122,6 +125,17 @@ public class ReviewController : MonoBehaviour
         }
 
     }
+
+    public void SetDeleteButton(bool isActive)
+    {
+        deleteButton.SetActive(isActive);
+    }
+
+    public void DeleteReview()
+    {
+        // TODO: wire to database call
+    }
+
 }
 
 public struct RatingReviewing

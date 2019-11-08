@@ -92,6 +92,8 @@ public class RecipeManagerUI : MonoBehaviour
 
         labelINText.text = "Ingredients";
 
+        #region Load ingredients
+
         // update ingredients
         for (int i = 0; i < newRecipe.Ingredients.Length; i++)
         {
@@ -335,6 +337,36 @@ public class RecipeManagerUI : MonoBehaviour
         ReviewManagerUI.Instance.Enable();
     }
 
+    /// <summary>
+    /// Draws the community star rating in the info header.
+    /// </summary>
+    /// <param name="rating"></param>
+    public void DrawCommunityRating(int rating)
+    {
+        if (rating > starRatingTrans.childCount)
+            throw new UnityException($"Rating {rating} was higher than stars available ({surveyGoldStars.transform.childCount}).");
+
+        // Clear previous rating
+        foreach (Transform child in starRatingTrans)
+            child.gameObject.SetActive(false);
+
+        // Display new rating
+        for (int i = 0; i < rating; i++)
+        {
+            var star = starRatingTrans.GetChild(i);
+            star.gameObject.SetActive(true);
+        }
+    } 
+
+    #endregion
+
+    public void ShowMoreReviews()
+    {
+        canvas.SetActive(false);
+        ReviewManagerUI.Instance.InitReviewUI(currentRecipe);
+        ReviewManagerUI.Instance.Enable();
+    }
+
     public void Test()
     {
         List<Ingredient> ingredients = new List<Ingredient>();
@@ -353,20 +385,13 @@ public class RecipeManagerUI : MonoBehaviour
 
         List<string> tags = new List<string>() {"Fish"};
 
-        List<string> reviews =
-            new List<string>()
+        List<Review> reviews =
+            new List<Review>()
             {
-                "pretty good",
-                "pretty good",
-                "pretty good",
-                "pretty good",
-                "pretty good",
-                "pretty good",
-                "pretty good",
-                "pretty good"
+
             };
 
-        Recipe recipe = new Recipe("Butter Salmon", "", 560, 45, tags, ingredients, directions, "0", reviews: reviews, starRating: 3);
+        Recipe recipe = new Recipe("Butter Salmon", "", 560, 45, tags, ingredients, directions, reviews, 3);
 
         InitRecipeUI(recipe);
     }

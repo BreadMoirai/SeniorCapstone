@@ -61,7 +61,7 @@ namespace Tests
                         "Toss together using tongs",
                         "Put into containers to take on the go or inside a large tortilla to make a wrap",
                         "Serve with lime wedges"
-                    }, "preset_data")
+                    }, new List<Review>(), 0)
             };
         public static Review[] REVIEWS = new[]
         {

@@ -29,7 +29,9 @@ install:
 
 # run the script for unit tests and builds
 script:
-  - u3d run --verbose -t -- -batchmode -nographics -runEditorTests -testPlatform Android -testResults results.xml
+  - u3d run --verbose -t -- -batchmode -nographics -runEditorTests -projectPath . -testPlatform Android -testResults results.xml -logFile log.txt
   - ls results.xml
+  - ls log.txt
   - echo $GIST_KEY > ~/.gist
+  - gist log.txt
   - gist results.xml

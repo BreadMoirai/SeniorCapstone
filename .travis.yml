@@ -15,15 +15,17 @@ env:
   - LC_ALL=en_US.UTF-8
   - LANG=en_US.UTF-8
   - secure: MybY9s/gRfdHpileh4Oktxp0yGqC7CQAbAZ8Uk1T/5xA53P/ip3oQ3YS4WHaIxCbcNKHeg6R9MdPRzm/v/x34fQq9pQbMPffJg0mBuZN4JO6nGzaiP2VxA7Cc/DAwZXCAM+x1YjM2eUr0bdXKJB1iM7KspFKUhOxTHNjwVYWvqJZgCUdDudvxcqS7TxiIPy6p2smXcfwe42ash4OkcqkpxiQ0vUzfALS7RQ+lE8lDdwq1TwNyop7+ROiDqFheSx20nfSAaQNxI152w872B9EJHhYurdOZX0g44Q3+MgyL7frvB69AidZiWxVpGRyFnCsbUI/mmF/ZAN6qtxfeilIcfL8vByb+gBk97n89iAdySrFClQ7prNg4wwnkJKxr6Ybr5uTFOPHv3t238pIxlkycSh+At/n0xuAMDT99GP+5i3mqYZA+jeUN/tN+WtRXO3y+iEAj0t9aOOKXcmqjD+6XfnoHRSrOzDak6sytMChVuEL1TbBC52SuiAnB3ZZ9k3Yx8QkkdhJ9QWlMibAR9tipn8IsNw5hrsBz0drLDfaA3JroB0iXNCKQRC0nGPKwx7mZWF3MWjyAkznUrWhrllXsuTe4WjNm3uUL9yFtAy700rYRa6/nZTcftcadZPKUDdMDubsQXtPHyRzVWjU8UgfAN+9ooJFEqV1ZgbixPM5p+4=
-  - secure: JogRQxCnXYmcM9zQDalBkylmw7NUjL0SQRWa6Z2wCZFvv824cCMqX+267MnPuGiGEPgolocnXTeSiwW1b9BmHJYMexnn09Z5IZRWfd1jrXYSoOEcJ9viYgHCyNVtok2fIfHJjDqKOX5CErbgZ7mc/lmgkW+Yk6Xvjev2SvhI9d5LtecDJ8+xtPdcIdUcKWpKZkst/UQRNNm+KY+diwaflzVG6TwGGColy6fbFP+yTjm9DClgzWVEzVLpkZDUC3wE80ylQRCjU/fUVQiF0EYq6rSuzOf3qMP4wjgVEM1QBInChSTryobzShFE8dTlZtOgVSRRVHEtncaxij0ksAbAnAFuTXz9LK9T2wYVSfgYtGr1vEoOz3Q+IyLyfJGSAKJDmx18fg+Pe22uTPpLvU2WTdYN6gxitbt1cH2+cfM9/929SalhrA5o6pKqteTqoZLyAMZNQNGlhrLpBBltEUb4zY1IM8D93XqES8QnRv9c4wGUNLLkPiasKaP8IbX5iY63buuqiMA9PXyxfElp7QmRqguMWf8mvknzvX1W9Jn6+XZiOJfwndzs5jNQxiImlQ7pKOxfopJgo+NIJEMlKr2ELGaRv5v31IL8+JHyK+THu17cK/BhtHDWG5Ncx3qW4HzrNZpZlvqXLNl6nM4zBd5OBdaYT7D6AwWNkbWVpSUbP+w=
-  - secure: fnQMznEee43NGJ3FjbZxTBYsTtaRFfycreehwJOvSIJaANutg47GMGB6ODHVJAXEe8uH5cnaZxdgKnJNCD4p49lgKz9PTcy/41dmJo27xYzm3JjF4supXsJ8vx+6VKKQpFcNO3kMekvsOEhjrtOmV9e50dHBQjOH4d0t8L5PM1JsD7Qf1xNABDK4IwUX5rUCdcaA6A7t0WC3NZ1TTHqetbj3CKYtmK6gvDOKas7dVlBr2LkvqNknVyx1WCrSOtTd5f3UpWEiIIcYGWy7Rtc1cT1tJliCqIbe7YhWsM/wvznXCATU9t//wXhFTwJdIgJm+bDRPjlkeqtgHMifECRweMJcMAMWR/890GtPCqwe8ubuIPHdVD118EMIF8BEWFJUC0aNMNpsHHuCNseVwr8rmLnPCBMxwpJJMwRmKTBU6T/7uVsUQJGK2vqeWZaDWUbcPbxODhlx/VHYI0tq5CL0PGPdEon7bjB6cpNFb3030X2nFtzeABkiDqZnoWYAop9Nb02b1WfaHr0+w3y4g6ppApXbU3mAs89ZXgkSEvuyE/DE5enbGhNt0cPuLNwYG84nR5vvMEnzqy//FVCvqR7A4uyyahHqqG0ZGl/8uxutv+hLsEi56Ep2CpkPOumFfzZ9ujb/y/p/29V3Es9NsMq0weTTC9VU/TEK8XS18it/v78=
+before_install:
+  - openssl aes-256-cbc -K $encrypted_e95b23bffc2b_key -iv $encrypted_e95b23bffc2b_iv
+    -in Unity_v2018.x.ulf.enc -out Unity_v2018.x.ulf -d
 install:
 - sudo gem install u3d
 - sudo u3d install -p Unity,Android
 - sudo gem install gist
 script:
 - u3d run --verbose -t -- -batchmode -nographics -runEditorTests -projectPath . -testPlatform
-  Android -testResults results.xml -logFile log.txt -username $UNITY_USERNAME -password $UNITY_PASSWORD
+  Android -testResults results.xml -logFile log.txt -manualLicenseFile Unity_v2018.x.ulf
+- u3d run --verbost -t -- -batchmode -returnlicense -logFile -quit
 - ls results.xml
 - ls log.txt
 - echo $GIST_KEY > ~/.gist
